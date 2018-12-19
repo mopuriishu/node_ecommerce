@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+
+        </title>
+    </head>
+    <body>
+
+        <script>
+            // promise returned from a function  //inside a function or methods
+            const ajax = (url) => {
+                return new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest(); 
+                    xhr.open('GET', url); 
+                    xhr.onreadystatechange = function(){
+                        if(xhr.readyState === 4 && xhr.status === 200) {
+                            resolve(JSON.parse(xhr.responseText)); 
+                        } 
+                        if(xhr.status === 404) {
+                            reject(new Error('resource not found'))
+                        }
+                    }
+                    xhr.send(); 
+                });
+            }
+
+            ajax('https://jsonplaceholder.typicode.com/users').then((users) => {
+                console.log(users); 
+            }).catch((err) => {
+                console.log('Error', err.message); 
+            })
+
+
+            // promise return from a method inside an object 
+            const myAjax = {
+                    get(url) {
+                        return new Promise((resolve, reject) => {
+                            const xhr = new XMLHttpRequest();
+                            xhr.open('GET', url);
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState === 4 && xhr.status === 200) {
+                                    resolve(JSON.parse(xhr.responseText));
+                                }
+                                if (xhr.status === 404) {
+                                    reject(new Error('resource not found'))
+                                }
+                            }
+                            xhr.send();
+                        });
+                    }
+                }
+            myAjax.get('https://jsonplaceholder.typicode.com/users').then((users) => {
+                console.log(users);
+            }).catch((err) =>{
+                console.log(err.message); 
+            })
+            
+        </script>
+    </body>
+</html>
